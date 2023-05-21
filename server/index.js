@@ -5,6 +5,9 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
+// to receive imported functions
+const db = require('./queries')
+
 // define port for server
 const port = 8000
 
@@ -18,9 +21,11 @@ app.get('/', (req, res)=>{
 })
 
 // send message back to client
-app.get('/api', (req, res) => {
-    res.json({message: 'Live from the server'})
-})
+app.get('/links', db.getLinks)
+
+app.get('/links/:id', ()=>{
+});
+
 
 // start app on port
 app.listen(port, () => {
