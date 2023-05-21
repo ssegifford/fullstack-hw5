@@ -12,12 +12,12 @@ const db = require('./queries')
 const port = 8000
 
 // host react app as static files
-app.use(express.static(path.resolve(__dirname, '../favlinks/build')))
+app.use(express.static(path.resolve(__dirname, '../client/build')))
 
 // define routes
 app.get('/', (req, res)=>{
     // define what should happen (send html file)
-    res.sendFile(path.resolve(__dirname, '../favlinks/build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
 // send message back to client
