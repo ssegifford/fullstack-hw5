@@ -7,7 +7,7 @@ const pool = new Pool({
   port: 5432,
 })
 
-//Create handler functions that will be request handlers in express server
+//Create, Read, Update, Delete
 
 //Get all data from database
 const getLinks = (req, res)=>{
@@ -23,7 +23,7 @@ const getLinks = (req, res)=>{
 const getLinkById = (req, res) => {
     const id = parseInt(req.params.id)
   
-    pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM links WHERE id = $1', [id], (error, results) => {
       if (error) {
         throw error
       }
@@ -31,6 +31,44 @@ const getLinkById = (req, res) => {
     })
   }
 
+const createLink = (request, response) => {
+  const { name, URL } = request.body
+
+  pool.query('INSERT INTO links (name, URL) VALUES ($1, $2) RETURNING *', [name, URL], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(201).send(`Link added with ID: ${results.rows[0].id}`)
+  })
+}
+
+const updateLink = (request, response) => {
+  const id = parseInt(request.params.id)
+  const { name, URL } = request.body
+
+  pool.query(
+    'UPDATE links SET name = $1, URL = $2 WHERE id = $3',
+    [name, URL, id],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`Link modified with ID: ${id}`)
+    }
+  )
+}
+
+const deleteLink = (request, response) => {
+  const id = parseInt(request.params.id)
+
+  pool.query('DELETE FROM links WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).send(`Link deleted with ID: ${id}`)
+  })
+}
+
 module.exports = {
-    getLinks, getLinkById
+    getLinks, getLinkById, createLink, updateLink, deleteLink
 }

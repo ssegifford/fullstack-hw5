@@ -3,9 +3,10 @@ import Table from './Table';
 import Form from './Form';
 
 const LinkContainer = (props) => {
-
+  
+  const [newLinks, setNewLinks] = useState([])    /* creates an array of state */
   const[message, setMessages] = useState(null)
-
+  
   const fetchAPI = async () => {
     // fetch data from db for table
     try{
@@ -17,17 +18,26 @@ const LinkContainer = (props) => {
       console.log(error)
     }
   }
-
   //use fetch to get data
   useEffect(()=>{ fetchAPI() }, [])
 
+  // Fetch data from localStorage on component mount
+  useEffect(() => {
+    const storedLinks = localStorage.getItem('links');
+    if (storedLinks) {
+      setNewLinks(JSON.parse(storedLinks));
+    }
+  }, []);
 
-  const [newLinks, setNewLinks] = useState([])    /* creates an array of state */
-  
+  // Update localStorage whenever newLinks state changes
+  useEffect(() => {
+    localStorage.setItem('links', JSON.stringify(newLinks));
+  }, [newLinks]);
+
+
+
   const handleRemove = (index) => {   /* Create logic for setting the state to filter array and remove favLink at index */
-    
-  /*short way to create new waythat filters out link at the index of existing array and only keep links that are not */
-    const filter = newLinks.filter((_, i) => i !== index)
+    const filter = newLinks.filter((_, i) => i !== index)  /*creates new array and filters(removes) out link at index of existing array */
     setNewLinks(filter)
   }
 

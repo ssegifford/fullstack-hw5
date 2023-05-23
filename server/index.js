@@ -24,12 +24,12 @@ app.get('/', (req, res)=>{
     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
-// send message back to client
+// Create, Read, Update, Delete
 app.get('/links', db.getLinks)
-
-app.get('/links/:id', ()=>{
-});
-
+app.get('/links/:id', db.getLinkById);
+app.post('/links', db.createLink)
+app.put('/links/:id', db.updateLink)
+app.delete('/links/:id', db.deleteLink)
 
 // start app on port
 app.listen(port, () => {
