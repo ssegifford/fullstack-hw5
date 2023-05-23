@@ -11,6 +11,10 @@ const db = require('./queries')
 // define port for server
 const port = 8000
 
+// Middleware ( telling express we'll be parsing json )
+app.use(express.json())
+app.use(express.urlencoded({ extended : true }))
+
 // host react app as static files
 app.use(express.static(path.resolve(__dirname, '../client/build')))
 
@@ -29,5 +33,5 @@ app.get('/links/:id', ()=>{
 
 // start app on port
 app.listen(port, () => {
-    console.log(`Server is listenning on port ${port}`)
+    console.log(`Server is listening on port ${port}`)
 }) 

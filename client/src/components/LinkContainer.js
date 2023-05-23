@@ -1,8 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Table from './Table';
 import Form from './Form';
 
 const LinkContainer = (props) => {
+
+  const[message, setMessages] = useState(null)
+
+  const fetchAPI = async () => {
+    // fetch data from db for table
+    try{
+      let response = await fetch('/links')
+      let data = await response.json()
+      setMessages(data.message)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  //use fetch to get data
+  useEffect(()=>{ fetchAPI() }, [])
+
 
   const [newLinks, setNewLinks] = useState([])    /* creates an array of state */
   

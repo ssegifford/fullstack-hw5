@@ -31,8 +31,6 @@ const getLinkById = (req, res) => {
     })
   }
 
-
-
 module.exports = {
     getLinks, getLinkById
 }
