@@ -46,8 +46,15 @@ const LinkContainer = (props) => {
   //use fetch to get data
   useEffect(()=>{ 
     fetchAPI()
-    postLink()
   }, [])
+
+  // Fetch data from localStorage on component mount
+  useEffect(() => {
+    const storedLinks = localStorage.getItem('links');
+    if (storedLinks) {
+      setNewLinks(JSON.parse(storedLinks));
+    }
+  }, []);
 
   // Update localStorage whenever newLinks state changes
   useEffect(() => {
@@ -56,9 +63,17 @@ const LinkContainer = (props) => {
 
 
 
-  const handleRemove = (index) => {   /* Create logic for setting the state to filter array and remove favLink at index */
-    const filter = newLinks.filter((_, i) => i !== index)  /*creates new array and filters(removes) out link at index of existing array */
-    setNewLinks(filter)
+  const handleRemove = async (index) => {   /* Create logic for setting the state to filter array and remove favLink at index */
+    const linkToRemove = newLinks[index];  
+
+    try {
+      await fetch(`/links/${linkToRemove.id}`, { method: 'DELETE' });
+      const filter = newLinks.filter((_, i) => i !== index);/*creates new array and filters(removes) out link at index of existing array */
+      setNewLinks(filter);
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   const handleSubmit = (favLink) => {       /* Create logic to set state and add new favLink to favLinks array in state.
@@ -70,6 +85,8 @@ const LinkContainer = (props) => {
     /* shorter version below
     let favLinks = [...newLinks, favLink]; 
     setNewLinks(favLinks); */
+
+    postLink(favLink)
   }
 
   return (                                  
