@@ -27,7 +27,7 @@ app.get('/', (req, res)=>{
 // Create, Read, Update, Delete
 app.get('/links', db.getLinks)
 app.get('/links/:id', db.getLinkById);
-app.post('/links', db.createLink)
+app.post('/newLink', db.createLink)
 app.put('/links/:id', db.updateLink)
 app.delete('/links/:id', db.deleteLink)
 

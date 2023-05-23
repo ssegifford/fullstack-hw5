@@ -18,16 +18,36 @@ const LinkContainer = (props) => {
       console.log(error)
     }
   }
-  //use fetch to get data
-  useEffect(()=>{ fetchAPI() }, [])
 
-  // Fetch data from localStorage on component mount
-  useEffect(() => {
-    const storedLinks = localStorage.getItem('links');
-    if (storedLinks) {
-      setNewLinks(JSON.parse(storedLinks));
+  const postLink = async () => {
+    let testLink = {
+      name: "Test",
+      URL: "test.com"
     }
-  }, []);
+
+    try {
+      let response = await fetch('/newLink', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(testLink),
+      })
+      console.log(response)
+      let message = response.text()
+      console.log(message)
+    }
+    catch(error) {
+      console.log(error)
+    }  
+  }
+
+
+  //use fetch to get data
+  useEffect(()=>{ 
+    fetchAPI()
+    postLink()
+  }, [])
 
   // Update localStorage whenever newLinks state changes
   useEffect(() => {
